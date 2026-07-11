@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Invitation</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+html,body{
+    width:100%;
+    height:100%;
+    overflow:hidden;
+    background:#000;
+    touch-action:manipulation;
+    font-family:sans-serif;
+}
+
+#video{
+    position:fixed;
+    inset:0;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    background:#000;
+}
+
+#overlay{
+    position:fixed;
+    inset:0;
+    z-index:5;
+    cursor:pointer;
+}
+
+#muteBtn{
+    position:fixed;
+    right:20px;
+    bottom:20px;
+    width:56px;
+    height:56px;
+    border:none;
+    border-radius:50%;
+    background:rgba(0,0,0,.45);
+    backdrop-filter:blur(10px);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+    z-index:10;
+    transition:.25s;
+}
+
+#muteBtn:hover{
+    transform:scale(1.08);
+}
+
+#muteBtn svg{
+    width:26px;
+    height:26px;
+    fill:white;
+}
+</style>
+</head>
+
+<body>
+
+<div id="overlay"></div>
+
+<video id="video" playsinline preload="auto">
+    <source src="video.mp4" type="video/mp4">
+</video>
+
+<audio id="audio" preload="auto">
+    <source src="audio.mp3" type="audio/mpeg">
+</audio>
+
+<button id="muteBtn">
+
+<svg id="icon" viewBox="0 0 24 24">
+<path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1-3.29-2.5-4.03v8.05A4.48 4.48 0 0016.5 12zm2.5 0c0 3.04-1.72 5.64-4.25 6.92l-.75-1.3A6.99 6.99 0 0017 12a7 7 0 00-2-4.92l.75-1.3C18.28 7.36 20 9.96 20 12z"/>
+</svg>
+
+</button>
+
+<script>
+
+const video=document.getElementById("video");
+const audio=document.getElementById("audio");
+const overlay=document.getElementById("overlay");
+const muteBtn=document.getElementById("muteBtn");
+const icon=document.getElementById("icon");
+
+let started=false;
+
+function start(){
+
+if(started) return;
+
+started=true;
+
+video.play();
+audio.play();
+
+overlay.style.display="none";
+
+}
+
+overlay.addEventListener("click",start);
+overlay.addEventListener("touchstart",start);
+
+video.addEventListener("ended",()=>{
+
+video.pause();
+
+});
+
+muteBtn.onclick=()=>{
+
+audio.muted=!audio.muted;
+
+icon.innerHTML=audio.muted?
+
+`<path d="M16.5 12c0-1.77-1-3.29-2.5-4.03v2.14l2.28 2.28c.14-.12.22-.24.22-.39zm3.27 8L4 4 2.73 5.27 7 9.54V15h4l5 5v-5.46l2.73 2.73L19.77 20z"/>`
+
+:
+
+`<path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1-3.29-2.5-4.03v8.05A4.48 4.48 0 0016.5 12zm2.5 0c0 3.04-1.72 5.64-4.25 6.92l-.75-1.3A6.99 6.99 0 0017 12a7 7 0 00-2-4.92l.75-1.3C18.28 7.36 20 9.96 20 12z"/>`;
+
+};
+
+</script>
+
+</body>
+</html>
